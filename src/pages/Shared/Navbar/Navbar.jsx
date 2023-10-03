@@ -1,7 +1,17 @@
 import { Link, NavLink } from "react-router-dom";
 import profilePic from "../../../assets/images/user.png";
+import { useContext } from "react";
+import { AuthContext } from "../../../providers/AuthProviders";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logOut()
+      .then()
+      .catch()
+  }
+
   const navLinks = (
     <>
       <li>
@@ -46,11 +56,25 @@ const Navbar = () => {
           Career
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          to="/login"
+          className={({ isActive, isPending }) =>
+            isPending
+              ? "pending"
+              : isActive
+              ? "text-[#D72050]"
+              : "text-[#706F6F]"
+          }
+        >
+          Login
+        </NavLink>
+      </li>
     </>
   );
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -86,11 +110,19 @@ const Navbar = () => {
             <img src={profilePic} />
           </div>
         </label>
-        <Link>
-          <button className="btn btn-sm px-6 rounded-none text-white bg-[#403F3F] hover:bg-[#403F3F]">
-            Login
-          </button>
-        </Link>
+        {user ? (
+          <Link>
+            <button onClick={handleLogout} className="btn btn-sm px-6 rounded-none text-white bg-[#403F3F] hover:bg-[#403F3F]">
+              Logout
+            </button>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <button className="btn btn-sm px-6 rounded-none text-white bg-[#403F3F] hover:bg-[#403F3F]">
+              Login
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );
